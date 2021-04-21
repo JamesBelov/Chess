@@ -1,4 +1,3 @@
-package src;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,6 +16,7 @@ public class Game {
 
     public static String CURRENT_TEXTURES; //annoyingly isnt final or private, just dont edit it anywhere
     final public static String DEFAULT_TEXTURES = "def";
+    final public static String TEXT_TEXTURES = "text";
 
     public Game(){
         this(Game.DEFAULT_TEXTURES);
@@ -45,24 +45,24 @@ public class Game {
             }
         }
         for(Square s : board[1]){
-            //s.setPieceOnSquare(new Pawn(Piece.BLACK));
+            s.setPieceOnSquare(new Pawn(Piece.BLACK));
         }
         for(Square s : board[6]){
             s.setPieceOnSquare(new Pawn(Piece.WHITE));
         }
-        //board[0][0].setPieceOnSquare(new Rook(Piece.BLACK));
-        //board[0][7].setPieceOnSquare(new Rook(Piece.BLACK));
+        board[0][0].setPieceOnSquare(new Rook(Piece.BLACK));
+        board[0][7].setPieceOnSquare(new Rook(Piece.BLACK));
         board[7][0].setPieceOnSquare(new Rook(Piece.WHITE));
         board[7][7].setPieceOnSquare(new Rook(Piece.WHITE));
-        //board[0][1].setPieceOnSquare(new Knight(Piece.BLACK));
-        //board[0][6].setPieceOnSquare(new Knight(Piece.BLACK));
+        board[0][1].setPieceOnSquare(new Knight(Piece.BLACK));
+        board[0][6].setPieceOnSquare(new Knight(Piece.BLACK));
         board[7][1].setPieceOnSquare(new Knight(Piece.WHITE));
         board[7][6].setPieceOnSquare(new Knight(Piece.WHITE));
-        //board[0][2].setPieceOnSquare(new Bishop(Piece.BLACK));
-        //board[0][5].setPieceOnSquare(new Bishop(Piece.BLACK));
+        board[0][2].setPieceOnSquare(new Bishop(Piece.BLACK));
+        board[0][5].setPieceOnSquare(new Bishop(Piece.BLACK));
         board[7][2].setPieceOnSquare(new Bishop(Piece.WHITE));
         board[7][5].setPieceOnSquare(new Bishop(Piece.WHITE));
-        //board[0][3].setPieceOnSquare(new Queen(Piece.BLACK));
+        board[0][3].setPieceOnSquare(new Queen(Piece.BLACK));
         board[7][3].setPieceOnSquare(new Queen(Piece.WHITE));
         board[0][4].setPieceOnSquare(new King(Piece.BLACK));
         board[7][4].setPieceOnSquare(new King(Piece.WHITE));
@@ -123,7 +123,7 @@ public class Game {
                             legalMoves.get(i).getButton().addActionListener((ActionListener) a -> {
                                 unhighlightBoard(board);
                                 removeActionListenersFromBoard(s, board);
-                                checkSpecialMoves(s, legalMoves.get(index), board); //doesnt check for en passant or promotion
+                                checkSpecialMoves(s, legalMoves.get(index), board); //doesnt check for en passant
                                 legalMoves.get(index).setPieceOnSquare(s.getPieceOnSquare());
                                 s.getPieceOnSquare().onFirstMove();
                                 s.setPieceOnSquare(null);
@@ -214,7 +214,6 @@ public class Game {
 
     public void checkSpecialMoves(Square from, Square to, Square[][] b){
         //check for en passant and remove appropriate pawn
-        //check for promotions and switch to appropriate piece
 
         if(from.getPieceOnSquare().getType().equals("King") &&
         from.getYPos() == 7 && from.getXPos() == 4){

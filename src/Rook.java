@@ -1,4 +1,3 @@
-package src;
 public class Rook extends Piece{
     
     public Rook(boolean trueForWhite){
