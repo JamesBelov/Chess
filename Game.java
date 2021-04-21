@@ -18,6 +18,7 @@ public class Game {
     public static String CURRENT_TEXTURES; //annoyingly isnt final or private, just dont edit it anywhere
     final public static String DEFAULT_TEXTURES = "def";
     final public static String TEXT_TEXTURES = "text";
+    final public static String ORANGUTAN_TEXTURES = "orang";
 
     public static void main(String[] args) throws Exception {
         new Game();
