@@ -5,6 +5,7 @@ public abstract class Piece {
     private boolean hasMoved;
     private boolean color;
     private String type;
+    private boolean enpAble = false; //en passant able
 
     final public static boolean WHITE = true;
     final public static boolean BLACK = false;
@@ -39,7 +40,7 @@ public abstract class Piece {
             return false;
         }
     }
-
+    
     public ArrayList<Square> getLegalMoves(Square from, Square[][] b){
         ArrayList<Square> legalMoves = new ArrayList<Square>();
         for(int i = 0; i < 8; i++){
@@ -58,6 +59,15 @@ public abstract class Piece {
 
     public boolean hasMoved(){
         return hasMoved;
+    }
+    //gets and sets to see if you can en passant 
+    public boolean getenpAble()
+    {
+        return enpAble;
+    }
+    public void setenpAble(boolean a)
+    {
+        enpAble = a;
     }
 
     public abstract boolean isLegalMove(Square from, Square to, Square[][] b); 

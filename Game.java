@@ -21,7 +21,7 @@ public class Game {
     final public static String ORANGUTAN_TEXTURES = "orang";
 
     public static void main(String[] args) throws Exception {
-        new Game();
+        new Game(ORANGUTAN_TEXTURES);
     }
 
     public Game(){
@@ -133,6 +133,8 @@ public class Game {
     private void move(){
         for(Square[] row : board){
             for(Square s : row){
+                if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getColor() == whiteToMove) s.getPieceOnSquare().setenpAble(false); //making sure u can en passant something later
+
                 if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getColor() == whiteToMove &&
                    s.getPieceOnSquare().hasLegalMove(s, board)){
                     highlight(s);
@@ -153,7 +155,7 @@ public class Game {
                                 s.setPieceOnSquare(null);
                                 whiteToMove = whiteToMove ? false : true;
 
-                                
+                                if(legalMoves.get(index).getPieceOnSquare().getType().equals("Pawn") && Math.abs(legalMoves.get(index).getYPos()-s.getYPos()) == 2) legalMoves.get(index).getPieceOnSquare().setenpAble(true);
 
                                 Square whiteKing = null;
                                 Square blackKing = null;
@@ -287,7 +289,17 @@ public class Game {
                 b[0][0].setPieceOnSquare(null);
             }
         }
-        
+        if(from.getPieceOnSquare().getType().equals("Pawn") && to.getPieceOnSquare() == null && from.getXPos() != to.getXPos()) //if its a pawn and it moves diagnoally to a square with no pieces EN PASSANT POG
+        {
+            if(from.getPieceOnSquare().getColor())
+            {
+                b[to.getYPos()+1][to.getXPos()].setPieceOnSquare(null);
+            }
+            else
+            {
+                b[to.getYPos()-1][to.getXPos()].setPieceOnSquare(null);
+            }
+        }
         if(from.getPieceOnSquare().getType().equals("Pawn") &&
           (to.getYPos() == 0 || to.getYPos() == 7)){
             setPromotionChoice(true);           
