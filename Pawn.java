@@ -20,8 +20,8 @@ public class Pawn extends Piece {
                 return false;
             }
 
-            if(getColor() ? (from.getYPos() - to.getYPos() == 1) || (!hasMoved() ? from.getYPos() - to.getYPos() == 2 : false) : 
-                            (from.getYPos() - to.getYPos() == -1) || (!hasMoved() ? from.getYPos() - to.getYPos() == -2 : false)){
+            if(getColor() ? (from.getYPos() - to.getYPos() == 1) || ((!hasMoved() && to.getYPos() != 7 && b[to.getYPos() + 1][to.getXPos()].getPieceOnSquare() == null) ? from.getYPos() - to.getYPos() == 2 : false) : 
+                            (from.getYPos() - to.getYPos() == -1) || ((!hasMoved() && to.getYPos() != 0 && b[to.getYPos() - 1][to.getXPos()].getPieceOnSquare() == null) ? from.getYPos() - to.getYPos() == -2 : false)){
 
                 Square[][] iB = new Square[8][8];
                 for(int i = 0; i < 8; i++){

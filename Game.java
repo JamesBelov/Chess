@@ -19,6 +19,10 @@ public class Game {
     final public static String DEFAULT_TEXTURES = "def";
     final public static String TEXT_TEXTURES = "text";
 
+    public static void main(String[] args) throws Exception {
+        new Game();
+    }
+
     public Game(){
         this(Game.DEFAULT_TEXTURES);
     }
