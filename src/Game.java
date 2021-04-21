@@ -98,6 +98,7 @@ public class Game {
         move();
     }
 
+
     private void move(){
         for(Square[] row : board){
             for(Square s : row){
@@ -116,12 +117,40 @@ public class Game {
                                 removeActionListenersFromBoard(s, board, true);
                                 checkSpecialMoves(s, legalMoves.get(index), board); //doesnt check for en passant or promotion
                                 legalMoves.get(index).setPieceOnSquare(s.getPieceOnSquare());
+    
                                 s.getPieceOnSquare().onFirstMove();
                                 s.setPieceOnSquare(null);
                                 removeActionListenersFromBoard(s, board, false);
                                 whiteToMove = whiteToMove ? false : true;
+
+
+
+                                Square whiteKing = null;
+                                Square blackKing = null;
+                                for(Square[] row1: board)
+                                {
+                                    for(Square piece : row1)
+                                    {
+                                        if(piece.getPieceOnSquare() != null && piece.getPieceOnSquare().getType() == "King")
+                                        {
+                                            if(piece.getPieceOnSquare().getColor())
+                                            {
+                                                whiteKing = piece;
+                                            }
+                                            else
+                                            {
+                                                blackKing = piece;
+                                            }
+                                        }
+                                    }
+                                }
                                 if(!gameOver()){ //doesnt check for 3 move repetition
                                     move();
+                                }
+                                else if(!whiteKing.isAttacked(board, false) && !blackKing.isAttacked(board, true)) //checks stalemates
+                                {
+                                    winner.setText("ITS A DRAW");
+                                    //after the previous if statement we can assume there are no legal moves, so if no king is in check it must be a draw
                                 }
                                 else{
                                     //doesnt check for draws

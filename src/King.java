@@ -20,7 +20,7 @@ public class King extends Piece{
         if(!from.getPieceOnSquare().hasMoved()){
             if(getColor()){
 
-                if(!b[7][7].getPieceOnSquare().hasMoved() &&
+                if(b[7][7].getPieceOnSquare() != null && !b[7][7].getPieceOnSquare().hasMoved() &&
                 to.getYPos() == 7 && to.getXPos() == 6 &&
                 !b[7][6].isAttacked(b, !getColor()) &&
                 b[7][6].getPieceOnSquare() == null &&
@@ -29,7 +29,7 @@ public class King extends Piece{
                     return true;
                 }
 
-                if(!b[7][0].getPieceOnSquare().hasMoved() &&
+                if(b[7][0].getPieceOnSquare() != null && !b[7][0].getPieceOnSquare().hasMoved() &&
                 to.getYPos() == 7 && to.getXPos() == 2 &&
                 !b[7][1].isAttacked(b, !getColor()) &&
                 b[7][1].getPieceOnSquare() == null &&
@@ -42,7 +42,7 @@ public class King extends Piece{
 
             }else{
 
-                if(!b[0][7].getPieceOnSquare().hasMoved() &&
+                if(b[0][7].getPieceOnSquare() != null && !b[0][7].getPieceOnSquare().hasMoved() &&
                 to.getYPos() == 0 && to.getXPos() == 6 &&
                 !b[0][6].isAttacked(b, !getColor()) &&
                 b[0][6].getPieceOnSquare() == null &&
@@ -51,7 +51,7 @@ public class King extends Piece{
                     return true;
                 }
 
-                if(!b[0][0].getPieceOnSquare().hasMoved() &&
+                if(b[0][0].getPieceOnSquare() != null && !b[0][0].getPieceOnSquare().hasMoved() &&
                 to.getYPos() == 0 && to.getXPos() == 2 &&
                 !b[0][1].isAttacked(b, !getColor()) &&
                 b[0][1].getPieceOnSquare() == null &&
