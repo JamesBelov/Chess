@@ -17,8 +17,6 @@ public class Game {
 
     public static String CURRENT_TEXTURES; //annoyingly isnt final or private, just dont edit it anywhere
     public static final String DEFAULT_TEXTURES = "def";
-    public static int[] whitePieces = new int[6]; //king, queen, rook, bishup, knight, pawn
-    public static int[] blackPieces = new int[6]; 
     public Game(){
         this(Game.DEFAULT_TEXTURES);
     }
@@ -46,34 +44,30 @@ public class Game {
             }
         }
         for(Square s : board[1]){
-            s.setPieceOnSquare(new Pawn(false));
+            //s.setPieceOnSquare(new Pawn(Piece.BLACK));
         }
         for(Square s : board[6]){
-            s.setPieceOnSquare(new Pawn(true));
+            //s.setPieceOnSquare(new Pawn(Piece.WHITE));
         }
-        board[0][0].setPieceOnSquare(new Rook(false));
-        board[0][7].setPieceOnSquare(new Rook(false));
-        board[7][0].setPieceOnSquare(new Rook(true));
-        board[7][7].setPieceOnSquare(new Rook(true));
-        board[0][1].setPieceOnSquare(new Knight(false));
-        board[0][6].setPieceOnSquare(new Knight(false));
-        board[7][1].setPieceOnSquare(new Knight(true));
-        board[7][6].setPieceOnSquare(new Knight(true));
-        board[0][2].setPieceOnSquare(new Bishop(false));
-        board[0][5].setPieceOnSquare(new Bishop(false));
-        board[7][2].setPieceOnSquare(new Bishop(true));
-        board[7][5].setPieceOnSquare(new Bishop(true));
-        board[0][3].setPieceOnSquare(new Queen(false));
-        board[7][3].setPieceOnSquare(new Queen(true));
-        board[0][4].setPieceOnSquare(new King(false));
-        board[7][4].setPieceOnSquare(new King(true));
-        //below is initing piece counts
-        //king, queen, rook, bishup, knight, pawn
-        whitePieces[0] = 1; whitePieces[1] = 1; whitePieces[2] = 2; whitePieces[3] = 2; whitePieces[4] = 2; whitePieces[5] = 8;
-        blackPieces[0] = 1; blackPieces[1] = 1; blackPieces[2] = 2; blackPieces[3] = 2; blackPieces[4] = 2; blackPieces[5] = 8;
-
+       board[0][0].setPieceOnSquare(new Rook(Piece.BLACK));
+        board[0][7].setPieceOnSquare(new Rook(Piece.BLACK));
+        board[7][0].setPieceOnSquare(new Rook(Piece.WHITE));
+        board[7][7].setPieceOnSquare(new Rook(Piece.WHITE));
+        board[0][1].setPieceOnSquare(new Knight(Piece.BLACK));
+        board[0][6].setPieceOnSquare(new Knight(Piece.BLACK));
+        board[7][1].setPieceOnSquare(new Knight(Piece.WHITE));
+        board[7][6].setPieceOnSquare(new Knight(Piece.WHITE));
+        board[0][2].setPieceOnSquare(new Bishop(Piece.BLACK));
+        board[0][5].setPieceOnSquare(new Bishop(Piece.BLACK));
+        board[7][2].setPieceOnSquare(new Bishop(Piece.WHITE));
+        board[7][5].setPieceOnSquare(new Bishop(Piece.WHITE));
+        board[0][3].setPieceOnSquare(new Queen(Piece.BLACK));
+        board[7][3].setPieceOnSquare(new Queen(Piece.WHITE));
+        board[0][4].setPieceOnSquare(new King(Piece.BLACK));
+        board[7][4].setPieceOnSquare(new King(Piece.WHITE));
+        
+        
         //end board initialization
-
         JPanel bot = new JPanel(new FlowLayout());
         winner = new JLabel();
         bot.add(winner);
@@ -111,7 +105,23 @@ public class Game {
         whiteToMove = true;
         move();
     }
-
+    private int[] countPieces(boolean white)
+    {
+        int[] pieces = new int[6]; //King, Queen, Rook, Bishup, Knight, Pawn
+        for(Square[] row: board)
+        {
+            for(Square s: row)
+            {
+                if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getType() == "King" && s.getPieceOnSquare().getColor() == white) pieces[0]++;
+                if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getType() == "Queen" && s.getPieceOnSquare().getColor() == white) pieces[1]++;
+                if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getType() == "Rook" && s.getPieceOnSquare().getColor() == white) pieces[2]++;
+                if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getType() == "Bishop" && s.getPieceOnSquare().getColor() == white) pieces[3]++;
+                if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getType() == "Knight" && s.getPieceOnSquare().getColor() == white) pieces[4]++;
+                if(s.getPieceOnSquare() != null && s.getPieceOnSquare().getType() == "Pawn" && s.getPieceOnSquare().getColor() == white) pieces[5]++;
+            }
+        }
+        return pieces;
+    }
 
     private void move(){
         for(Square[] row : board){
@@ -121,20 +131,20 @@ public class Game {
                     highlight(s);
                     s.getButton().addActionListener((ActionListener) e -> {
                         unhighlightBoard(board);
-                        removeActionListenersFromBoard(s, board, true);
+                        removeActionListenersFromBoard(s, board);
                         ArrayList<Square> legalMoves = s.getPieceOnSquare().getLegalMoves(s, board);
                         for(int i = 0; i < legalMoves.size(); i++){
                             highlight(legalMoves.get(i));//there is a glitch with highlighting during check
                             final int index = i;
                             legalMoves.get(i).getButton().addActionListener((ActionListener) a -> {
                                 unhighlightBoard(board);
-                                removeActionListenersFromBoard(s, board, true);
+                                removeActionListenersFromBoard(s, board);
                                 checkSpecialMoves(s, legalMoves.get(index), board); //doesnt check for en passant or promotion
+
                                 legalMoves.get(index).setPieceOnSquare(s.getPieceOnSquare());
                                 
                                 s.getPieceOnSquare().onFirstMove();
                                 s.setPieceOnSquare(null);
-                                removeActionListenersFromBoard(s, board, false);
                                 whiteToMove = whiteToMove ? false : true;
 
                                 
@@ -156,6 +166,25 @@ public class Game {
                                                 blackKing = piece;
                                             }
                                         }
+                                    }
+                                }
+                                int[] whitePieces = countPieces(true);
+                                int[] blackPieces = countPieces(false);
+
+                                if(whitePieces[5] == 0 && blackPieces[5] == 0   //check for 0 pawns
+                                && whitePieces[2] == 0 && blackPieces[2] == 0   //check for 0 rooks
+                                && whitePieces[1] == 0 && blackPieces[1] == 0)  //check for 0 queens
+                                {
+                                    if(whitePieces[3] == 0 && whitePieces[4] == 0   //checks for 0 knights n bishops
+                                    && blackPieces[3] == 0 && blackPieces[4] == 0)
+                                    {
+                                        //just 2 kings left draw
+                                        winner.setText("ITS A DRAW");
+                                    }
+                                    if((whitePieces[3] + whitePieces[4] + blackPieces[3] + blackPieces[4]) == 1)
+                                    {
+                                        //checks for 1 knight or 1 bishop versus king draw
+                                        winner.setText("ITS A DRAW");
                                     }
                                 }
                                 if(!gameOver()){ //doesnt check for 3 move repetition
@@ -197,10 +226,10 @@ public class Game {
         }
     }
 
-    private void removeActionListenersFromBoard(Square sq, Square[][] b, boolean exceptCurrentSquare){
+    private void removeActionListenersFromBoard(Square sq, Square[][] b){
         for(Square[] row : board){
             for(Square s : row){
-                if(s.getButton().getActionListeners().length > 0 && (exceptCurrentSquare ? !s.equals(sq) : true)){
+                if(s.getButton().getActionListeners().length > 0){
                     for(ActionListener a : s.getButton().getActionListeners()){
                         s.getButton().removeActionListener(a);
                     }
@@ -252,8 +281,53 @@ public class Game {
                 b[0][0].setPieceOnSquare(null);
             }
         }
+        //promote to bishup
+        if(from.getPieceOnSquare().getType().equals("Pawn") &&
+          (to.getYPos() == 0 || to.getYPos() == 7)){             
+            promotionButtonBishop.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Bishop(to.getPieceOnSquare().getColor()));
+            });
+            //promote to a knight
+            promotionButtonKnight.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Knight(to.getPieceOnSquare().getColor()));
+            });
+            //promote to a queen
+            promotionButtonQueen.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Queen(to.getPieceOnSquare().getColor()));              
+            });
+            //promote to a rook
+            promotionButtonRook.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Rook(to.getPieceOnSquare().getColor())); 
+            });
+        }
 
+    }
 
+    private void removeActionListenersFromPromotionButtons(){
+        if(promotionButtonBishop.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonBishop.getActionListeners()){
+                promotionButtonBishop.removeActionListener(d);
+            }
+        }
+        if(promotionButtonKnight.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonKnight.getActionListeners()){
+                promotionButtonKnight.removeActionListener(d);
+            }
+        }
+        if(promotionButtonQueen.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonQueen.getActionListeners()){
+                promotionButtonQueen.removeActionListener(d);
+            }
+        }
+        if(promotionButtonRook.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonRook.getActionListeners()){
+                promotionButtonRook.removeActionListener(d);
+            }
+        }
     }
 
 }

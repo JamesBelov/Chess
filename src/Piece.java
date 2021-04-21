@@ -7,6 +7,9 @@ public abstract class Piece {
     private boolean color;
     private String type;
 
+    final public static boolean WHITE = true;
+    final public static boolean BLACK = false;
+
     public Piece(boolean trueForWhite){
         color = trueForWhite;
         hasMoved = false;
