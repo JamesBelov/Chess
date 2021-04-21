@@ -1,4 +1,3 @@
-package src;
 public class Queen extends Piece{
     
     public Queen(boolean trueForWhite){

@@ -1,4 +1,3 @@
-package src;
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,10 +13,10 @@ public class Square {
     public Square(int yPos, int xPos){
         color = (xPos + yPos) % 2;
         if(color == 0){
-            b = new JButton(new ImageIcon("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png"));
+            b = new JButton(new ImageIcon("Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png"));
         }
         else{
-            b = new JButton(new ImageIcon("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png"));
+            b = new JButton(new ImageIcon("Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png"));
         }
         b.setPreferredSize(new Dimension(64, 64));
         pieceOnSquare = null;
@@ -33,14 +32,14 @@ public class Square {
     public void setPieceOnSquare(Piece p){
         pieceOnSquare = p;
         if(p != null){
-            this.setButtonImage("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\" + getPieceOnSquare().getType() + "\\" + p.getColor() + color + p.getType() + ".png");
+            this.setButtonImage("Texture Packs\\" + Game.CURRENT_TEXTURES + "\\" + getPieceOnSquare().getType() + "\\" + p.getColor() + color + p.getType() + ".png");
         }
         else{
             if(color == 0){
-                this.setButtonImage("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png");
+                this.setButtonImage("Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png");
             }
             else{
-                this.setButtonImage("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png");
+                this.setButtonImage("Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png");
             }
         }
     }
@@ -48,14 +47,14 @@ public class Square {
     public String getCurrentButtonImagePath(){
         String s = "";
         if(this.getPieceOnSquare() != null){
-            s = "src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\" + getPieceOnSquare().getType() + "\\" + this.getPieceOnSquare().getColor() + color + this.getPieceOnSquare().getType() + ".png";
+            s = "Texture Packs\\" + Game.CURRENT_TEXTURES + "\\" + getPieceOnSquare().getType() + "\\" + this.getPieceOnSquare().getColor() + color + this.getPieceOnSquare().getType() + ".png";
         }
         else{
             if(color == 0){
-                s = "src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png";
+                s = "Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png";
             }
             else{
-                s = "src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png";
+                s = "Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png";
             }
         }
         if(highlighted){
