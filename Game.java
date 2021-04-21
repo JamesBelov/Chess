@@ -8,6 +8,7 @@ public class Game {
     private Square[][] board;
     private boolean whiteToMove;
 
+    private boolean promotionChoiceNeeded;
     private JButton promotionButtonQueen;
     private JButton promotionButtonRook;
     private JButton promotionButtonBishop;
@@ -188,7 +189,9 @@ public class Game {
                                     }
                                 }
                                 if(!gameOver()){ //doesnt check for 3 move repetition
-                                    move();
+                                    if(!promotionChoiceNeeded){
+                                        move();
+                                    }
                                 }
                                 else if(!whiteKing.isAttacked(board, false) && !blackKing.isAttacked(board, true)) //checks stalemates
                                 {
@@ -196,7 +199,6 @@ public class Game {
                                     //after the previous if statement we can assume there are no legal moves, so if no king is in check it must be a draw
                                 }
                                 else{
-                                    //doesnt check for draws
                                     winner.setText(whiteToMove ? "Black Wins!" : "White Wins!");
                                 }
                             });
@@ -280,30 +282,44 @@ public class Game {
                 b[0][0].setPieceOnSquare(null);
             }
         }
-        //promote to bishup
+        
         if(from.getPieceOnSquare().getType().equals("Pawn") &&
-          (to.getYPos() == 0 || to.getYPos() == 7)){             
+          (to.getYPos() == 0 || to.getYPos() == 7)){
+            setPromotionChoice(true);           
+            //promote to bishop  
             promotionButtonBishop.addActionListener( (ActionListener) c -> {
                 removeActionListenersFromPromotionButtons();
                 to.setPieceOnSquare(new Bishop(to.getPieceOnSquare().getColor()));
+                setPromotionChoice(false);
+                move();
             });
             //promote to a knight
             promotionButtonKnight.addActionListener( (ActionListener) c -> {
                 removeActionListenersFromPromotionButtons();
                 to.setPieceOnSquare(new Knight(to.getPieceOnSquare().getColor()));
+                setPromotionChoice(false);
+                move();
             });
             //promote to a queen
             promotionButtonQueen.addActionListener( (ActionListener) c -> {
                 removeActionListenersFromPromotionButtons();
-                to.setPieceOnSquare(new Queen(to.getPieceOnSquare().getColor()));              
+                to.setPieceOnSquare(new Queen(to.getPieceOnSquare().getColor()));   
+                setPromotionChoice(false);      
+                move();     
             });
             //promote to a rook
             promotionButtonRook.addActionListener( (ActionListener) c -> {
                 removeActionListenersFromPromotionButtons();
-                to.setPieceOnSquare(new Rook(to.getPieceOnSquare().getColor())); 
+                to.setPieceOnSquare(new Rook(to.getPieceOnSquare().getColor()));
+                setPromotionChoice(false);
+                move();
             });
         }
 
+    }
+
+    private void setPromotionChoice(boolean b){
+        promotionChoiceNeeded = b;
     }
 
     private void removeActionListenersFromPromotionButtons(){
