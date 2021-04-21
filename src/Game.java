@@ -15,8 +15,16 @@ public class Game {
     private JButton promotionButtonKnight;
     private JLabel winner;
 
-    public Game(){
+    public static String CURRENT_TEXTURES; //annoyingly isnt final or private, just dont edit it anywhere
+    public static final String DEFAULT_TEXTURES = "def";
 
+    public Game(){
+        this(Game.DEFAULT_TEXTURES);
+    }
+
+    public Game(String texturePackName){
+
+        CURRENT_TEXTURES = texturePackName;
         JFrame f = new JFrame("Chess");
         f.setVisible(true);
         f.setSize(640, 640);

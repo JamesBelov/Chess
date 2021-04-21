@@ -14,10 +14,10 @@ public class Square {
     public Square(int yPos, int xPos){
         color = (xPos + yPos) % 2;
         if(color == 0){
-            b = new JButton(new ImageIcon("src\\0null.png"));
+            b = new JButton(new ImageIcon("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png"));
         }
         else{
-            b = new JButton(new ImageIcon("src\\1null.png"));
+            b = new JButton(new ImageIcon("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png"));
         }
         b.setPreferredSize(new Dimension(64, 64));
         pieceOnSquare = null;
@@ -33,14 +33,14 @@ public class Square {
     public void setPieceOnSquare(Piece p){
         pieceOnSquare = p;
         if(p != null){
-            this.setButtonImage("src\\" + p.getColor() + color + p.getType() + ".png");
+            this.setButtonImage("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\" + getPieceOnSquare().getType() + "\\" + p.getColor() + color + p.getType() + ".png");
         }
         else{
             if(color == 0){
-                this.setButtonImage("src\\0null.png");
+                this.setButtonImage("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png");
             }
             else{
-                this.setButtonImage("src\\1null.png");
+                this.setButtonImage("src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png");
             }
         }
     }
@@ -48,14 +48,14 @@ public class Square {
     public String getCurrentButtonImagePath(){
         String s = "";
         if(this.getPieceOnSquare() != null){
-            s = "src\\" + this.getPieceOnSquare().getColor() + color + this.getPieceOnSquare().getType() + ".png";
+            s = "src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\" + getPieceOnSquare().getType() + "\\" + this.getPieceOnSquare().getColor() + color + this.getPieceOnSquare().getType() + ".png";
         }
         else{
             if(color == 0){
-                s = "src\\0null.png";
+                s = "src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\0null.png";
             }
             else{
-                s = "src\\1null.png";
+                s = "src\\Texture Packs\\" + Game.CURRENT_TEXTURES + "\\null\\1null.png";
             }
         }
         if(highlighted){
