@@ -17,7 +17,8 @@ public class Game {
 
     public static String CURRENT_TEXTURES; //annoyingly isnt final or private, just dont edit it anywhere
     public static final String DEFAULT_TEXTURES = "def";
-
+    public static int[] whitePieces = new int[6]; //king, queen, rook, bishup, knight, pawn
+    public static int[] blackPieces = new int[6]; 
     public Game(){
         this(Game.DEFAULT_TEXTURES);
     }
@@ -66,6 +67,11 @@ public class Game {
         board[7][3].setPieceOnSquare(new Queen(true));
         board[0][4].setPieceOnSquare(new King(false));
         board[7][4].setPieceOnSquare(new King(true));
+        //below is initing piece counts
+        //king, queen, rook, bishup, knight, pawn
+        whitePieces[0] = 1; whitePieces[1] = 1; whitePieces[2] = 2; whitePieces[3] = 2; whitePieces[4] = 2; whitePieces[5] = 8;
+        blackPieces[0] = 1; blackPieces[1] = 1; blackPieces[2] = 2; blackPieces[3] = 2; blackPieces[4] = 2; blackPieces[5] = 8;
+
         //end board initialization
 
         JPanel bot = new JPanel(new FlowLayout());
@@ -125,13 +131,13 @@ public class Game {
                                 removeActionListenersFromBoard(s, board, true);
                                 checkSpecialMoves(s, legalMoves.get(index), board); //doesnt check for en passant or promotion
                                 legalMoves.get(index).setPieceOnSquare(s.getPieceOnSquare());
-    
+                                
                                 s.getPieceOnSquare().onFirstMove();
                                 s.setPieceOnSquare(null);
                                 removeActionListenersFromBoard(s, board, false);
                                 whiteToMove = whiteToMove ? false : true;
 
-
+                                
 
                                 Square whiteKing = null;
                                 Square blackKing = null;
