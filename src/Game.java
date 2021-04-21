@@ -16,7 +16,7 @@ public class Game {
     private JLabel winner;
 
     public static String CURRENT_TEXTURES; //annoyingly isnt final or private, just dont edit it anywhere
-    public static final String DEFAULT_TEXTURES = "def";
+    final public static String DEFAULT_TEXTURES = "def";
 
     public Game(){
         this(Game.DEFAULT_TEXTURES);
@@ -45,27 +45,27 @@ public class Game {
             }
         }
         for(Square s : board[1]){
-            s.setPieceOnSquare(new Pawn(false));
+            //s.setPieceOnSquare(new Pawn(Piece.BLACK));
         }
         for(Square s : board[6]){
-            s.setPieceOnSquare(new Pawn(true));
+            s.setPieceOnSquare(new Pawn(Piece.WHITE));
         }
-        board[0][0].setPieceOnSquare(new Rook(false));
-        board[0][7].setPieceOnSquare(new Rook(false));
-        board[7][0].setPieceOnSquare(new Rook(true));
-        board[7][7].setPieceOnSquare(new Rook(true));
-        board[0][1].setPieceOnSquare(new Knight(false));
-        board[0][6].setPieceOnSquare(new Knight(false));
-        board[7][1].setPieceOnSquare(new Knight(true));
-        board[7][6].setPieceOnSquare(new Knight(true));
-        board[0][2].setPieceOnSquare(new Bishop(false));
-        board[0][5].setPieceOnSquare(new Bishop(false));
-        board[7][2].setPieceOnSquare(new Bishop(true));
-        board[7][5].setPieceOnSquare(new Bishop(true));
-        board[0][3].setPieceOnSquare(new Queen(false));
-        board[7][3].setPieceOnSquare(new Queen(true));
-        board[0][4].setPieceOnSquare(new King(false));
-        board[7][4].setPieceOnSquare(new King(true));
+        //board[0][0].setPieceOnSquare(new Rook(Piece.BLACK));
+        //board[0][7].setPieceOnSquare(new Rook(Piece.BLACK));
+        board[7][0].setPieceOnSquare(new Rook(Piece.WHITE));
+        board[7][7].setPieceOnSquare(new Rook(Piece.WHITE));
+        //board[0][1].setPieceOnSquare(new Knight(Piece.BLACK));
+        //board[0][6].setPieceOnSquare(new Knight(Piece.BLACK));
+        board[7][1].setPieceOnSquare(new Knight(Piece.WHITE));
+        board[7][6].setPieceOnSquare(new Knight(Piece.WHITE));
+        //board[0][2].setPieceOnSquare(new Bishop(Piece.BLACK));
+        //board[0][5].setPieceOnSquare(new Bishop(Piece.BLACK));
+        board[7][2].setPieceOnSquare(new Bishop(Piece.WHITE));
+        board[7][5].setPieceOnSquare(new Bishop(Piece.WHITE));
+        //board[0][3].setPieceOnSquare(new Queen(Piece.BLACK));
+        board[7][3].setPieceOnSquare(new Queen(Piece.WHITE));
+        board[0][4].setPieceOnSquare(new King(Piece.BLACK));
+        board[7][4].setPieceOnSquare(new King(Piece.WHITE));
         //end board initialization
 
         JPanel bot = new JPanel(new FlowLayout());
@@ -115,23 +115,19 @@ public class Game {
                     highlight(s);
                     s.getButton().addActionListener((ActionListener) e -> {
                         unhighlightBoard(board);
-                        removeActionListenersFromBoard(s, board, true);
+                        removeActionListenersFromBoard(s, board);
                         ArrayList<Square> legalMoves = s.getPieceOnSquare().getLegalMoves(s, board);
                         for(int i = 0; i < legalMoves.size(); i++){
                             highlight(legalMoves.get(i));//there is a glitch with highlighting during check
                             final int index = i;
                             legalMoves.get(i).getButton().addActionListener((ActionListener) a -> {
                                 unhighlightBoard(board);
-                                removeActionListenersFromBoard(s, board, true);
+                                removeActionListenersFromBoard(s, board);
                                 checkSpecialMoves(s, legalMoves.get(index), board); //doesnt check for en passant or promotion
                                 legalMoves.get(index).setPieceOnSquare(s.getPieceOnSquare());
-    
                                 s.getPieceOnSquare().onFirstMove();
                                 s.setPieceOnSquare(null);
-                                removeActionListenersFromBoard(s, board, false);
                                 whiteToMove = whiteToMove ? false : true;
-
-
 
                                 Square whiteKing = null;
                                 Square blackKing = null;
@@ -191,10 +187,10 @@ public class Game {
         }
     }
 
-    private void removeActionListenersFromBoard(Square sq, Square[][] b, boolean exceptCurrentSquare){
+    private void removeActionListenersFromBoard(Square sq, Square[][] b){
         for(Square[] row : board){
             for(Square s : row){
-                if(s.getButton().getActionListeners().length > 0 && (exceptCurrentSquare ? !s.equals(sq) : true)){
+                if(s.getButton().getActionListeners().length > 0){
                     for(ActionListener a : s.getButton().getActionListeners()){
                         s.getButton().removeActionListener(a);
                     }
@@ -247,7 +243,49 @@ public class Game {
             }
         }
 
+        if(from.getPieceOnSquare().getType().equals("Pawn") &&
+          (to.getYPos() == 0 || to.getYPos() == 7)){
+            promotionButtonBishop.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Bishop(to.getPieceOnSquare().getColor()));
+            });
+            promotionButtonKnight.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Knight(to.getPieceOnSquare().getColor()));
+            });
+            promotionButtonQueen.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Queen(to.getPieceOnSquare().getColor()));
+            });
+            promotionButtonRook.addActionListener( (ActionListener) c -> {
+                removeActionListenersFromPromotionButtons();
+                to.setPieceOnSquare(new Rook(to.getPieceOnSquare().getColor()));
+            });
+        }
 
+    }
+
+    private void removeActionListenersFromPromotionButtons(){
+        if(promotionButtonBishop.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonBishop.getActionListeners()){
+                promotionButtonBishop.removeActionListener(d);
+            }
+        }
+        if(promotionButtonKnight.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonKnight.getActionListeners()){
+                promotionButtonKnight.removeActionListener(d);
+            }
+        }
+        if(promotionButtonQueen.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonQueen.getActionListeners()){
+                promotionButtonQueen.removeActionListener(d);
+            }
+        }
+        if(promotionButtonRook.getActionListeners().length > 0){
+            for(ActionListener d : promotionButtonRook.getActionListeners()){
+                promotionButtonRook.removeActionListener(d);
+            }
+        }
     }
 
 }
