@@ -18,9 +18,13 @@ public class Pawn extends Piece {
 
         if(to.getPieceOnSquare() == null){
             //check if u can empassant 2 the square
-            if(getColor() ? (b[to.getYPos()+1][to.getXPos()].getPieceOnSquare() != null && b[to.getYPos()+1][to.getXPos()].getPieceOnSquare().getenpAble()) : 
-            b[to.getYPos()-1][to.getXPos()].getPieceOnSquare() != null && b[to.getYPos()-1][to.getXPos()].getPieceOnSquare().getenpAble())
+            if((Math.abs(from.getXPos() - to.getXPos()) == 1) && (getColor() ? (from.getYPos() - to.getYPos() == 1) : (from.getYPos() - to.getYPos() == -1)) &&
+            (getColor() ? (b[to.getYPos()+1][to.getXPos()].getPieceOnSquare() != null && b[to.getYPos()+1][to.getXPos()].getPieceOnSquare().getenpAble()) : 
+            b[to.getYPos()-1][to.getXPos()].getPieceOnSquare() != null && b[to.getYPos()-1][to.getXPos()].getPieceOnSquare().getenpAble()))
             {
+                
+                    
+                
                 Square[][] iB = new Square[8][8];
                 for(int i = 0; i < 8; i++){
                     for(int j = 0; j < 8; j++){
